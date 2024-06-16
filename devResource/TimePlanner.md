@@ -61,10 +61,18 @@
 
    1. E-R图
 
-      ![image](C:\Users\86131\Desktop\笔记\image\image.png)
+      ![ER](C:\Users\86131\Desktop\笔记\image\ER.png)
    
    2. 模式设计
    
       Tasks(<u>id</u>, name, discription, is_complete)
+   
+      Task_relation(<u>id</u>, ancestor, descendant)
+   
+      Time_boxes(<u>id</u>, start_time, end_time)
+   
+      Time_giving(<u>id</u>, task_id, time_box_id)
+   
+      Columns
    
    3. sql(mysql)代码实现
