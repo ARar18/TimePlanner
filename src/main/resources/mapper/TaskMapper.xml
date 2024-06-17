@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.timeplanner.mapper.TaskMapper">
+    <resultMap id="TaskResultMap" type="org.example.timeplanner.pojo.entity.Task">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="isCompleted" column="is_complete"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="TaskResultMap">
+        SELECT * FROM Tasks;
+    </select>
+
+    <select id="getById" parameterType="int" resultMap="TaskResultMap">
+        SELECT * FROM Tasks WHERE id = #{id};
+    </select>
+
+    <select id="getSubTasks" parameterType="int" resultMap="TaskResultMap">
+        SELECT * FROM Tasks WHERE id IN (SELECT descendant FROM Task_relation WHERE ancestor = #{id});
+    </select>
+
+    <select id="getTasksByLabel" parameterType="int" resultMap="TaskResultMap">
+        SELECT * FROM Tasks WHERE id IN (SELECT task_id FROM Labeling WHERE label_id = #{labelId});
+    </select>
+
+    <select id="getTasksByColumn" parameterType="int" resultMap="TaskResultMap">
+        SELECT * FROM Tasks WHERE id IN (SELECT task_id FROM Belong_to_columns WHERE column_id = #{ColumnId});
+    </select>
+
+    <select id="getByTimeBox" parameterType="int" resultMap="TaskResultMap">
+        SELECT * FROM Tasks WHERE id IN (SELECT task_id FROM Time_giving WHERE time_box_id = #{timeBoxId});
+    </select>
+
+    <insert id="addTask" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Tasks (name, description, is_complete) VALUES (#{name}, #{description}, #{isCompleted});
+    </insert>
+
+    <update id="updateTask">
+        UPDATE Tasks SET name = #{name}, description = #{description}, is_complete = #{isCompleted} WHERE id = #{id};
+    </update>
+
+    <delete id="deleteTask" parameterType="int">
+        DELETE FROM Tasks WHERE id = #{id};
+    </delete>
+</mapper>

@@ -62,33 +62,33 @@
    1. E-R图
 
       ![ER](C:\Users\86131\Desktop\笔记\image\ER-1718536533765-2.png)
-   
+
    2. 模式设计
-   
+
       Tasks(<u>id</u>, name, discription, is_complete)
-   
+
       Task_relation(<u>id</u>, ancestor, descendant)
-   
+
       Time_boxes(<u>id</u>, start_time, end_time)
-   
+
       Time_giving(<u>id</u>, task_id, time_box_id)
-   
+
       Columns(<u>id</u>, name, discription)
-   
+
       Belong_to_columns(<u>id</u>, task_id, column_id)
-   
+
       Labels(<u>id</u>, name, color, discription)
-   
+
       Labeling(id, task_id, label_id)
-   
+
       Catalog(id, name)
-   
+
       Catalog_relation(<u>id</u>, ancestor, descendant)
-   
+
       Task_path(id, task_id, catalog_id)
-   
+
    3. sql(mysql)代码实现
-   
+
       ``` mysql
       CREATE TABLE IF NOT EXISTS Tasks (
           id INT AUTO_INCREMENT PRIMARY KEY,
@@ -170,5 +170,9 @@
       );
       ```
 
-3. 
+3. 后端程序设计：
+
+   采用Mybatis+Springboot框架
+
+   1. 
 

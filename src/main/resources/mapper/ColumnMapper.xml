@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org/example/timeplanner/mapper/ColumnMapper">
+    <resultMap id="ColumnResultMap" type="org.example.timeplanner.pojo.entity.Column">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="ColumnResultMap">
+        SELECT * FROM Columns;
+    </select>
+
+    <select id="getById" parameterType="int" resultMap="ColumnResultMap">
+        SELECT * FROM Columns WHERE id = #{id};
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Columns (name, description) VALUES (#{name}, #{description});
+    </insert>
+
+    <update id="update">
+        UPDATE Columns SET name = #{name}, description = #{description} WHERE id = #{id};
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM Columns WHERE id = #{id};
+    </delete>
+</mapper>

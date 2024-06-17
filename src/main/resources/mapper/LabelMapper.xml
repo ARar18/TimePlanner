@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org/example/timeplanner/mapper/LabelMapper">
+    <resultMap id="LabelResultMap" type="org.example.timeplanner.pojo.entity.Label">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="color" column="color"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="LabelResultMap">
+        SELECT * FROM Labels;
+    </select>
+
+    <select id="getById" parameterType="int" resultMap="LabelResultMap">
+        SELECT * FROM Labels WHERE id = #{id};
+    </select>
+
+    <select id="getByTask" parameterType="int" resultMap="LabelResultMap">
+        SELECT * FROM Labels WHERE id IN (SELECT label_id FROM Labeling WHERE task_id = #{taskId});
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Labels (name, color, description) VALUES (#{name}, #{color}, #{description});
+    </insert>
+
+    <update id="update">
+        UPDATE Labels SET name = #{name}, color = #{color}, description = #{description} WHERE id = #{id};
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM Labels WHERE id = #{id};
+    </delete>
+</mapper>

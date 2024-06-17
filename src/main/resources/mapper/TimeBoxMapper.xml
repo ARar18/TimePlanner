@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.timeplanner.mapper.TimeBoxMapper">
+    <resultMap id="TimeBoxResultMap" type="org.example.timeplanner.pojo.entity.TimeBox">
+        <id property="id" column="id"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+    </resultMap>
+    <select id="getAll" resultMap="TimeBoxResultMap">
+        SELECT * FROM Time_boxes;
+    </select>
+
+    <select id="getById" parameterType="int" resultMap="TimeBoxResultMap">
+        SELECT * FROM Time_boxes WHERE id = #{id};
+    </select>
+
+    <select id="getByTask" parameterType="int" resultMap="TimeBoxResultMap">
+        SELECT * FROM Time_boxes WHERE id IN (SELECT time_box_id FROM Time_giving WHERE task_id = #{TaskId});
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Time_boxes (start_time, end_time) VALUES (#{startTime}, #{endTime});
+    </insert>
+
+    <update id="update">
+        UPDATE Time_boxes SET start_time = #{startTime}, end_time = #{endTime} WHERE id = #{id};
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM Time_boxes WHERE id = #{id};
+    </delete>
+</mapper>
