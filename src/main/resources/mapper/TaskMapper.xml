@@ -18,10 +18,6 @@
         SELECT * FROM Tasks WHERE id = #{id};
     </select>
 
-    <select id="getSubTasks" parameterType="int" resultMap="TaskResultMap">
-        SELECT * FROM Tasks WHERE id IN (SELECT descendant FROM Task_relation WHERE ancestor = #{id});
-    </select>
-
     <select id="getTasksByLabel" parameterType="int" resultMap="TaskResultMap">
         SELECT * FROM Tasks WHERE id IN (SELECT task_id FROM Labeling WHERE label_id = #{labelId});
     </select>
@@ -34,8 +30,16 @@
         SELECT * FROM Tasks WHERE id IN (SELECT task_id FROM Time_giving WHERE time_box_id = #{timeBoxId});
     </select>
 
-    <insert id="addTask" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addTask" parameterType="org.example.timeplanner.pojo.entity.Task" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO Tasks (name, description, is_complete) VALUES (#{name}, #{description}, #{isCompleted});
+    </insert>
+
+    <insert id="initTask" parameterType="org.example.timeplanner.pojo.entity.Task">
+        INSERT INTO task_relation (ancestor, descendant, depth) VALUES (#{id}, #{id}, 0);
+    </insert>
+
+    <insert id="bindSubTask" parameterType="map">
+        INSERT INTO Task_relation (ancestor, descendant, depth) VALUES (#{parentTaskId}, #{childTaskId}, #{depth})
     </insert>
 
     <update id="updateTask">
@@ -45,4 +49,51 @@
     <delete id="deleteTask" parameterType="int">
         DELETE FROM Tasks WHERE id = #{id};
     </delete>
+
+    <select id="getSubTasks" parameterType="int" resultMap="TaskResultMap">
+        SELECT * FROM task_relation WHERE ancestor = #{taskId} AND depth = 1
+    </select>
+
+    <select id="getParentTask" parameterType="int" resultMap="TaskResultMap">
+        SELECT * FROM task_relation WHERE descendant = #{taskId} AND depth = 1
+    </select>
+
+    <!-- 列表视图 -->
+    <select id="listTasks" resultType="org.example.timeplanner.pojo.entity.Task">
+        SELECT * FROM Tasks
+        <where>
+            <if test="label != null">
+                label = #{label}
+            </if>
+        </where>
+        <choose>
+            <when test="sortBy == 'time'">
+                ORDER BY createTime
+            </when>
+            <when test="sortBy == 'alphabet'">
+                ORDER BY name
+            </when>
+            <when test="sortBy == 'labelAlphabet'">
+                ORDER BY label
+            </when>
+        </choose>
+    </select>
+
+    <!-- 看板视图 -->
+    <select id="tasksByColumn" resultType="org.example.timeplanner.pojo.entity.Task">
+        SELECT * FROM Tasks
+        ORDER BY columnId,
+        <choose>
+            <when test="sortBy == 'time'">
+                createTime
+            </when>
+            <when test="sortBy == 'alphabet'">
+                name
+            </when>
+            <when test="sortBy == 'labelAlphabet'">
+                label
+            </when>
+        </choose>
+    </select>
+
 </mapper>

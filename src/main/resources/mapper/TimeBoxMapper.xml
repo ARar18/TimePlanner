@@ -20,7 +20,7 @@
         SELECT * FROM Time_boxes WHERE id IN (SELECT time_box_id FROM Time_giving WHERE task_id = #{TaskId});
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="org.example.timeplanner.pojo.entity.TimeBox" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO Time_boxes (start_time, end_time) VALUES (#{startTime}, #{endTime});
     </insert>
 

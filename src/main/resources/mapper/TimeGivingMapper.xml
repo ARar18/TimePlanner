@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.timeplanner.mapper.TimeGivingMapper">
+    <select id="getTaskId" parameterType="int" resultType="int">
+        SELECT task_id FROM Time_giving WHERE id = #{timeBoxId}
+    </select>
+
+    <select id="getTimeBoxId" parameterType="int" resultType="int">
+        SELECT time_box_id FROM Time_giving WHERE task_id = #{taskId}
+    </select>
+
+    <insert id="TimeGiving" parameterType="map">
+        INSERT INTO Time_giving (task_id, time_box_id) VALUES (#{taskId}, #{timeBoxId})
+    </insert>
+
+    <update id="AlterTimeGiving" parameterType="map">
+        UPDATE Time_giving SET time_box_id = #{newTimeBoxId} WHERE task_id = #{taskId}
+    </update>
+</mapper>

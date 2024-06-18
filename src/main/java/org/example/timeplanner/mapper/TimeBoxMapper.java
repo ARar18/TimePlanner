@@ -12,7 +12,7 @@ public interface TimeBoxMapper {
     public TimeBox getById(int id);
     public TimeBox getByTask(int TaskId);
 
-    public boolean insert(LocalDateTime startTime, LocalDateTime endTime);
-    public boolean update(int id, LocalDateTime startTime, LocalDateTime endTime);
-    public boolean delete(int id);
+    public boolean insert(TimeBox timeBox);
+    public void update(int id, LocalDateTime startTime, LocalDateTime endTime);
+    public void delete(int id);
 }

@@ -12,4 +12,5 @@ public interface ColumnMapper {
     public int insert(String name, String description);
     public int update(int id, String name, String description);
     public int delete(int id);
+    int addTaskToColumn(int taskId, int columnId);
 }

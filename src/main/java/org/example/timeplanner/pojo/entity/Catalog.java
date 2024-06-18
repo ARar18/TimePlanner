@@ -5,6 +5,16 @@ public class Catalog {
     private int id;
     private String name;
 
+    public Catalog(String name) {
+        this.name = name;
+        this.id = -1;
+    }
+
+    public Catalog(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
